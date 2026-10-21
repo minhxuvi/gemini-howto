@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Antigravity Model Latency & Token Cost Simulator</title>
+  <!-- Allowlisted Antigravity Tailwind CSS runtime -->
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+</head>
+<body class="bg-transparent text-[var(--foreground)] antialiased p-4">
+  <div class="bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] rounded-xl p-5 shadow-sm max-w-2xl mx-auto">
+    <!-- Header -->
+    <div class="flex items-center justify-between border-b border-[var(--border)] pb-3 mb-4">
+      <div>
+        <h2 class="text-base font-semibold text-[var(--foreground)]">
+          Antigravity Fleet — Latency &amp; Cost Simulator
+        </h2>
+        <p class="text-xs text-[var(--muted-foreground)]">
+          Interactive Generative UI widget using live host CSS theme variables
+        </p>
+      </div>
+      <span id="tier-badge" class="text-xs font-medium px-2.5 py-1 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)]">
+        Gemini 4 Argon (High)
+      </span>
+    </div>
+
+    <!-- Controls Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+      <!-- Model Selector -->
+      <div class="bg-[var(--background)] border border-[var(--border)] rounded-lg p-3">
+        <label for="model-select" class="block text-xs font-medium text-[var(--muted-foreground)] mb-1">
+          Reasoning Model
+        </label>
+        <select
+          id="model-select"
+          class="w-full bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] rounded-md px-2.5 py-1.5 text-xs focus:outline-none"
+        >
+          <option value="argon">Gemini 4 Argon (Frontier Reasoning)</option>
+          <option value="flash38">Gemini 3.8 Flash (High-Speed Agentic)</option>
+          <option value="pro31">Gemini 3.1 Pro (Enterprise Balanced)</option>
+          <option value="litert">Gemma 4 26B (Local LiteRT On-Device)</option>
+        </select>
+      </div>
+
+      <!-- Effort Selector -->
+      <div class="bg-[var(--background)] border border-[var(--border)] rounded-lg p-3">
+        <label for="effort-select" class="block text-xs font-medium text-[var(--muted-foreground)] mb-1">
+          Thinking Effort Level (/effort)
+        </label>
+        <select
+          id="effort-select"
+          class="w-full bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] rounded-md px-2.5 py-1.5 text-xs focus:outline-none"
+        >
+          <option value="low">Low — Fast direct synthesis</option>
+          <option value="medium">Medium — Balanced multi-step</option>
+          <option value="high" selected>High — Deep architectural verification</option>
+          <option value="max">Max — Exhaustive hypothesis search</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Sliders -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+      <div class="bg-[var(--background)] border border-[var(--border)] rounded-lg p-3">
+        <div class="flex justify-between text-xs mb-1">
+          <span class="text-[var(--muted-foreground)]">Input Context Tokens</span>
+          <span id="input-tokens-label" class="font-mono font-semibold text-[var(--foreground)]">64,000</span>
+        </div>
+        <input
+          id="input-tokens"
+          type="range"
+          min="4000"
+          max="500000"
+          step="4000"
+          value="64000"
+          class="w-full accent-[var(--primary)] cursor-pointer"
+        />
+      </div>
+
+      <div class="bg-[var(--background)] border border-[var(--border)] rounded-lg p-3">
+        <div class="flex justify-between text-xs mb-1">
+          <span class="text-[var(--muted-foreground)]">Agentic Turns / Subagents</span>
+          <span id="turns-label" class="font-mono font-semibold text-[var(--foreground)]">6 turns</span>
+        </div>
+        <input
+          id="turns-count"
+          type="range"
+          min="1"
+          max="30"
+          step="1"
+          value="6"
+          class="w-full accent-[var(--primary)] cursor-pointer"
+        />
+      </div>
+    </div>
+
+    <!-- Metrics Output -->
+    <div class="grid grid-cols-3 gap-3 mb-4">
+      <div class="bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-center">
+        <div class="text-xs text-[var(--muted-foreground)]">Est. Turn Latency</div>
+        <div id="metric-latency" class="text-lg font-bold font-mono text-[var(--foreground)] mt-0.5">4.8s</div>
+      </div>
+      <div class="bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-center">
+        <div class="text-xs text-[var(--muted-foreground)]">Thinking Tokens</div>
+        <div id="metric-thinking" class="text-lg font-bold font-mono text-[var(--foreground)] mt-0.5">12,288</div>
+      </div>
+      <div class="bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 text-center">
+        <div class="text-xs text-[var(--muted-foreground)]">Est. Session Cost</div>
+        <div id="metric-cost" class="text-lg font-bold font-mono text-[var(--foreground)] mt-0.5">$0.42</div>
+      </div>
+    </div>
+
+    <!-- Recommendation Bar -->
+    <div id="recommendation-box" class="bg-[var(--secondary)] text-[var(--secondary-foreground)] rounded-lg px-3.5 py-2.5 text-xs flex items-center justify-between">
+      <span id="recommendation-text">
+        Recommended for complex multi-file refactoring, race conditions, and /boost runs.
+      </span>
+      <span id="cache-pill" class="font-mono text-xs px-2 py-0.5 rounded border border-[var(--border)]">
+        Prompt Cache: 85% hit
+      </span>
+    </div>
+  </div>
+
+  <script>
+    const MODELS = {
+      argon: {
+        name: "Gemini 4 Argon",
+        baseLatency: 2.4,
+        inputCostPerM: 2.5,
+        outputCostPerM: 12.0,
+        note: "Best for complex multi-file refactoring, race conditions, and /boost deep reasoning."
+      },
+      flash38: {
+        name: "Gemini 3.8 Flash",
+        baseLatency: 0.7,
+        inputCostPerM: 0.15,
+        outputCostPerM: 0.6,
+        note: "Ideal for fast interactive coding, subagent workers, and scheduled automations."
+      },
+      pro31: {
+        name: "Gemini 3.1 Pro",
+        baseLatency: 1.6,
+        inputCostPerM: 1.25,
+        outputCostPerM: 5.0,
+        note: "Balanced enterprise model for Gemini Enterprise Agent Platform (Vertex AI)."
+      },
+      litert: {
+        name: "Gemma 4 26B (LiteRT)",
+        baseLatency: 1.9,
+        inputCostPerM: 0.0,
+        outputCostPerM: 0.0,
+        note: "100% on-device execution via LiteRT-LM (Metal/CUDA). Zero API cost and full offline privacy."
+      }
+    };
+
+    const EFFORT_MULTIPLIERS = {
+      low: { latency: 0.6, thinkingTokens: 1024, label: "Low" },
+      medium: { latency: 1.0, thinkingTokens: 4096, label: "Medium" },
+      high: { latency: 1.8, thinkingTokens: 12288, label: "High" },
+      max: { latency: 3.2, thinkingTokens: 32768, label: "Max" }
+    };
+
+    const modelSelect = document.getElementById("model-select");
+    const effortSelect = document.getElementById("effort-select");
+    const inputTokens = document.getElementById("input-tokens");
+    const turnsCount = document.getElementById("turns-count");
+
+    function updateSimulator() {
+      const model = MODELS[modelSelect.value];
+      const effort = EFFORT_MULTIPLIERS[effortSelect.value];
+      const tokens = parseInt(inputTokens.value, 10);
+      const turns = parseInt(turnsCount.value, 10);
+
+      document.getElementById("input-tokens-label").textContent = tokens.toLocaleString();
+      document.getElementById("turns-label").textContent = turns + (turns === 1 ? " turn" : " turns");
+      document.getElementById("tier-badge").textContent = `${model.name} (${effort.label})`;
+
+      const latencySec = (model.baseLatency * effort.latency + (tokens / 120000)).toFixed(1);
+      const totalThinking = effort.thinkingTokens * turns;
+
+      // Prompt caching discounts 75% of repeated context across turns > 1
+      const effectiveInputMillions = (tokens + (turns - 1) * tokens * 0.25) / 1_000_000;
+      const effectiveOutputMillions = (turns * (1500 + effort.thinkingTokens)) / 1_000_000;
+      const totalCost = (
+        effectiveInputMillions * model.inputCostPerM +
+        effectiveOutputMillions * model.outputCostPerM
+      ).toFixed(2);
+
+      document.getElementById("metric-latency").textContent = `${latencySec}s`;
+      document.getElementById("metric-thinking").textContent = totalThinking.toLocaleString();
+      document.getElementById("metric-cost").textContent = model.inputCostPerM === 0 ? "$0.00 (Local)" : `$${totalCost}`;
+      document.getElementById("recommendation-text").textContent = model.note;
+    }
+
+    [modelSelect, effortSelect, inputTokens, turnsCount].forEach((el) =>
+      el.addEventListener("input", updateSimulator)
+    );
+    updateSimulator();
+  </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{
+  "mcpServers": {
+    "postgres-readonly": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@bytebase/dbhub",
+        "--dsn",
+        "${READONLY_DATABASE_URL}"
+      ],
+      "env": {
+        "PGCONNECT_TIMEOUT": "10",
+        "DB_READONLY": "true"
+      }
+    },
+    "postgres-dev": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@bytebase/dbhub",
+        "--dsn",
+        "${DEV_DATABASE_URL}"
+      ],
+      "env": {
+        "PGCONNECT_TIMEOUT": "10"
+      }
+    },
+    "sqlite-local": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-sqlite",
+        "--db-path",
+        "${SQLITE_DB_PATH}"
+      ]
+    }
+  }
+}

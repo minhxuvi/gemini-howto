@@ -1,0 +1,21 @@
+{
+  "name": "pr-review",
+  "displayName": "PR Review Suite",
+  "description": "Automated code review, security auditing, performance analysis, and PR summary generation.",
+  "version": "1.2.0",
+  "logo": "assets/logo.svg",
+  "suggestedPrompts": [
+    {
+      "title": "Review Staged Changes",
+      "prompt": "Run /review-pr on my current git diff and check for security and performance issues."
+    },
+    {
+      "title": "Draft PR Summary",
+      "prompt": "Use /pr-summary to generate a pull request description from the branch commits."
+    },
+    {
+      "title": "Audit Auth Changes",
+      "prompt": "Ask @security-reviewer to audit all modified files in this branch for OWASP Top 10 vulnerabilities."
+    }
+  ]
+}

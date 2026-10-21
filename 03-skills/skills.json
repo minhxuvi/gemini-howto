@@ -1,0 +1,30 @@
+{
+  "inherits": [
+    {
+      "path": "../shared-engineering-standards/.agents/skills.json",
+      "exclude": [
+        "legacy-jenkins-deploy"
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "path": ".agents/skills",
+      "exclude": [
+        "experimental-.*"
+      ]
+    },
+    {
+      "path": "tools/agents/skills",
+      "include_only": [
+        "code-review-specialist",
+        "doc-generator",
+        "refactor",
+        "gemini-md"
+      ]
+    },
+    {
+      "path": "~/.gemini/config/skills"
+    }
+  ]
+}

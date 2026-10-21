@@ -1,0 +1,94 @@
+{
+  "$comment": "Production Antigravity Permission Profiles using action(target) syntax. Precedence is strictly: Deny > Ask > Allow.",
+  "profiles": {
+    "strictEnterprise": {
+      "description": "Locked-down enterprise profile: blocks destructive commands and credential paths, requires explicit approval for network actuation and database mutations.",
+      "preset": "Request Review",
+      "enableTerminalSandbox": true,
+      "permissions": {
+        "deny": [
+          "command(rm -rf)",
+          "command(sudo)",
+          "command(regex:curl .*\\|.*(sh|bash|zsh))",
+          "command(regex:git push .*(--force|-f))",
+          "write_file(.git/)",
+          "write_file(.env)",
+          "read_file(/Users/*/.ssh)",
+          "read_file(/Users/*/.aws)",
+          "read_file(/Users/*/Library/Application Support)"
+        ],
+        "ask": [
+          "command(git push)",
+          "command(docker)",
+          "command(kubectl)",
+          "command(terraform)",
+          "execute_url(*)",
+          "mcp(postgres/execute_mutation)"
+        ],
+        "allow": [
+          "command(regex:git (status|diff|log|branch|show).*)",
+          "command(regex:pytest( .*)?)",
+          "write_file(src/)",
+          "write_file(tests/)",
+          "read_url(docs.python.org)",
+          "read_url(cloud.google.com)"
+        ]
+      }
+    },
+    "fullStackWebDev": {
+      "description": "High-velocity web engineering profile: allows safe npm/pnpm build & test scripts, local localhost browser inspection, and linter MCP servers.",
+      "preset": "Default",
+      "enableTerminalSandbox": true,
+      "permissions": {
+        "deny": [
+          "command(rm -rf /)",
+          "command(sudo)",
+          "write_file(.git/)",
+          "write_file(.env.production)"
+        ],
+        "ask": [
+          "command(npm publish)",
+          "command(npx wrangler deploy)",
+          "execute_url(console.cloud.google.com)",
+          "execute_url(github.com)"
+        ],
+        "allow": [
+          "command(git)",
+          "command(regex:(npm|pnpm|yarn) run (dev|build|lint|test|typecheck).*)",
+          "command(npx tsc --noEmit)",
+          "write_file(src/)",
+          "write_file(public/)",
+          "write_file(e2e/)",
+          "read_url(localhost)",
+          "execute_url(localhost)",
+          "read_url(developer.mozilla.org)",
+          "read_url(react.dev)",
+          "mcp(chrome-devtools/*)",
+          "mcp(eslint/*)"
+        ]
+      }
+    },
+    "autonomousCiCdRunner": {
+      "description": "Headless print-mode (agy -p) CI/CD profile for automated PR reviews and test triage.",
+      "preset": "Default",
+      "enableTerminalSandbox": true,
+      "permissions": {
+        "deny": [
+          "command(git push)",
+          "command(git commit)",
+          "command(rm -rf)",
+          "write_file(*)",
+          "execute_url(*)"
+        ],
+        "ask": [],
+        "allow": [
+          "read_file(*)",
+          "command(regex:git (diff|log|status|show).*)",
+          "command(regex:gh pr (view|diff|checks).*)",
+          "command(regex:npm (ci|test).*)",
+          "read_url(github.com)"
+        ]
+      }
+    }
+  }
+}

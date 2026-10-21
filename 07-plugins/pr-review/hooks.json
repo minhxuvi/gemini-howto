@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c 'import json, sys; data = json.load(sys.stdin); cmd = data.get(\"tool_input\", {}).get(\"CommandLine\", \"\"); sys.exit(2) if (\"git push\" in cmd and (\"--force\" in cmd or \"-f\" in cmd)) else sys.exit(0)'",
+            "description": "Block force-pushes during active PR review sessions"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "write_to_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c 'import json, os, sys, datetime; data = json.load(sys.stdin); target = data.get(\"tool_input\", {}).get(\"TargetFile\", \"\"); plugin_data = os.environ.get(\"PLUGIN_DATA\", \"/tmp\"); os.makedirs(plugin_data, exist_ok=True); open(os.path.join(plugin_data, \"review_audit.log\"), \"a\").write(f\"{datetime.datetime.now(datetime.timezone.utc).isoformat()} wrote {target}\\n\")'",
+            "description": "Record generated review artifacts in PLUGIN_DATA/review_audit.log"
+          }
+        ]
+      }
+    ]
+  }
+}

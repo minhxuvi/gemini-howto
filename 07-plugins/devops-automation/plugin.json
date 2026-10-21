@@ -1,0 +1,21 @@
+{
+  "name": "devops-automation",
+  "displayName": "DevOps & SRE Automation Suite",
+  "description": "Zero-downtime deployment workflows, emergency rollback procedures, Kubernetes/Prometheus MCP telemetry, and automated incident triage.",
+  "version": "1.1.0",
+  "logo": "assets/logo.svg",
+  "suggestedPrompts": [
+    {
+      "title": "Run Canary Deployment",
+      "prompt": "Use /deploy to run pre-flight checks and execute a staged canary deployment to staging."
+    },
+    {
+      "title": "Emergency Rollback",
+      "prompt": "Run /rollback to revert the latest deployment and generate an incident timeline."
+    },
+    {
+      "title": "Triage Production Alert",
+      "prompt": "Delegate to @incident-responder to correlate error logs with recent commits and identify the root cause."
+    }
+  ]
+}

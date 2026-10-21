@@ -1,0 +1,60 @@
+{
+  "$comment": "Antigravity CLI Sparse Configuration Profiles (~/.gemini/antigravity-cli/settings.json & keybindings.json)",
+  "profiles": {
+    "dailyDriverPowerUser": {
+      "description": "Recommended daily-driver profile for macOS/Linux with Auto Mode, OS Sandbox, Vim modal editing, and medium verbosity.",
+      "settingsPath": "~/.gemini/antigravity-cli/settings.json",
+      "settings": {
+        "model": "gemini-4-argon",
+        "effort": "high",
+        "agentMode": "auto",
+        "toolPermission": "proceed-in-sandbox",
+        "artifactReviewPolicy": "asks-for-review",
+        "enableTerminalSandbox": true,
+        "allowNonWorkspaceAccess": false,
+        "altScreenMode": "default",
+        "colorScheme": "tokyo night",
+        "verbosity": "medium",
+        "editor": "auto",
+        "editorMode": "vim",
+        "vimInsertFirst": true,
+        "queuedMessages": "queue",
+        "copyOnSelect": true,
+        "notifications": true,
+        "useG1Credits": false,
+        "enableTelemetry": true,
+        "showTips": false
+      }
+    },
+    "remoteSshAndTmuxProfile": {
+      "description": "Optimized for SSH sessions and tmux multiplexers using inline stdout rendering and conservative animations.",
+      "settingsPath": "~/.gemini/antigravity-cli/settings.json",
+      "settings": {
+        "model": "gemini-3.8-flash",
+        "toolPermission": "request-review",
+        "enableTerminalSandbox": true,
+        "altScreenMode": "never",
+        "colorScheme": "terminal",
+        "runningLightSpeed": "off",
+        "verbosity": "medium",
+        "queuedMessages": "send-immediately",
+        "copyOnSelect": false
+      }
+    },
+    "customKeybindingsExample": {
+      "description": "Custom TUI shortcut mappings (~/.gemini/antigravity-cli/keybindings.json). Map an action to [] to disable a non-protected shortcut.",
+      "settingsPath": "~/.gemini/antigravity-cli/keybindings.json",
+      "keybindings": {
+        "cli.clear_screen": ["ctrl+l"],
+        "prompt.insert_newline": ["shift+enter", "ctrl+j"],
+        "prompt.toggle_queue_mode": ["alt+m"],
+        "edit.open_editor": ["ctrl+g"],
+        "navigation.half_page_up": ["shift+up", "ctrl+u"],
+        "navigation.half_page_down": ["shift+down", "ctrl+d"],
+        "subagent.jump_next_approval": ["ctrl+j", "alt+j"],
+        "subagent.fast_approve": ["ctrl+k"],
+        "vim.insert.submit": ["enter"]
+      }
+    }
+  }
+}

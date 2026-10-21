@@ -1,0 +1,26 @@
+{
+  "builtin": "schedule",
+  "args": [
+    "CRON_TZ=America/New_York 0 9 * * 1-5",
+    "agentapi",
+    "new-conversation",
+    "--",
+    "Check all open pull requests and recent CI workflow runs in the repository. Summarize any PRs with failing checks, merge conflicts, or unresolved security review comments, and write a concise daily digest artifact."
+  ],
+  "restart_policy": "always",
+  "display_name": "Weekday Morning PR & CI Health Report",
+  "description": "Every weekday at 9:00 AM (America/New_York), audits open pull requests and CI status and generates a triage digest.",
+  "agent_permissions": {
+    "workspace_uris": [
+      "file:///Users/moc/Projects/gemini-howto"
+    ],
+    "access_grants": [
+      "command(gh pr list)",
+      "command(gh pr view)",
+      "command(gh run list)",
+      "command(git status)",
+      "command(git log)",
+      "read_url(github.com)"
+    ]
+  }
+}

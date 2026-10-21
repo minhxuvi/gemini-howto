@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c 'import json, sys; data = json.load(sys.stdin); cmd = data.get(\"tool_input\", {}).get(\"CommandLine\", \"\"); blocked = [\"terraform destroy\", \"kubectl delete namespace\", \"kubectl delete --all\", \"helm uninstall\"]; sys.exit(2) if any(b in cmd for b in blocked) else sys.exit(0)'",
+            "description": "Block destructive infrastructure and cluster deletion commands"
+          }
+        ]
+      }
+    ]
+  }
+}

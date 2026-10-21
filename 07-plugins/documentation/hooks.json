@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "write_to_file|replace_file_content",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c 'import json, sys; data = json.load(sys.stdin); path = data.get(\"tool_input\", {}).get(\"TargetFile\", \"\"); print(\"Verified markdown update:\", path) if path.endswith(\".md\") else None'",
+            "description": "Verify Markdown documentation updates after file write or edit"
+          }
+        ]
+      }
+    ]
+  }
+}

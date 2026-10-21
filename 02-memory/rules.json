@@ -1,0 +1,29 @@
+{
+  "inherits": [
+    {
+      "path": "../shared-standards/.agents/rules.json",
+      "exclude": [
+        "legacy-monolith-conventions.md"
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "path": "../platform-security-rules",
+      "exclude": [
+        "deprecated-*.md",
+        "archive/"
+      ]
+    },
+    {
+      "path": ".agents/rules",
+      "include_only": [
+        "database-migrations.md",
+        "protobuf-conventions.md",
+        "security-audit.md",
+        "frontend/react-server-components.md",
+        "backend/grpc-error-codes.md"
+      ]
+    }
+  ]
+}

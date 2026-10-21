@@ -1,0 +1,17 @@
+{
+  "name": "documentation",
+  "displayName": "Documentation & Architecture Sync",
+  "description": "Synchronize READMEs, API reference tables, and Mermaid architecture diagrams with codebase changes.",
+  "version": "1.0.0",
+  "logo": "assets/logo.svg",
+  "suggestedPrompts": [
+    {
+      "title": "Sync Docs with Recent Changes",
+      "prompt": "Run /docs-update to update our README and API reference to match the latest branch commits."
+    },
+    {
+      "title": "Generate API Reference",
+      "prompt": "Ask @api-documenter to extract all public functions and endpoints in src/ into a Markdown reference table."
+    }
+  ]
+}

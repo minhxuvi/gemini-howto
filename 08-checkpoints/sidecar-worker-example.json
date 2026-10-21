@@ -1,0 +1,13 @@
+{
+  "command": "python3",
+  "args": [
+    "-m",
+    "http.server",
+    "8765",
+    "--bind",
+    "127.0.0.1"
+  ],
+  "restart_policy": "on-failure",
+  "display_name": "Local Architecture Metrics Sidecar",
+  "description": "Persistent background worker and local UI sidecar serving live build and bundle-size telemetry on loopback port 8765."
+}

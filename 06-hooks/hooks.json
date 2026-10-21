@@ -1,0 +1,107 @@
+{
+  "workspace-session-init": {
+    "enabled": true,
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "./.agents/hooks/session-init.sh",
+        "timeout": 10
+      }
+    ]
+  },
+  "context-budget-tracker": {
+    "enabled": true,
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "python3 ./.agents/hooks/context-tracker.py",
+        "timeout": 5
+      }
+    ]
+  },
+  "shell-command-safety-guard": {
+    "enabled": true,
+    "PreToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.agents/hooks/pre-tool-check.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "./.agents/hooks/pre-commit.sh",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  },
+  "secret-leak-scanner": {
+    "enabled": true,
+    "PreToolUse": [
+      {
+        "matcher": "write_to_file|replace_file_content|multi_replace_file_content",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.agents/hooks/security-scan.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "auto-code-formatter": {
+    "enabled": true,
+    "PostToolUse": [
+      {
+        "matcher": "write_to_file|replace_file_content|multi_replace_file_content",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.agents/hooks/format-code.sh",
+            "timeout": 20
+          }
+        ]
+      }
+    ]
+  },
+  "tool-audit-logger": {
+    "enabled": true,
+    "PostToolUse": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.agents/hooks/log-commands.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
+  "post-invocation-observer": {
+    "enabled": true,
+    "PostInvocation": [
+      {
+        "type": "command",
+        "command": "python3 -c 'import json; print(json.dumps({\"injectSteps\": [], \"terminationBehavior\": \"\"}))'",
+        "timeout": 5
+      }
+    ]
+  },
+  "stop-verification-gate": {
+    "enabled": false,
+    "Stop": [
+      {
+        "type": "command",
+        "command": "./.agents/hooks/goal-gate.sh",
+        "timeout": 60
+      }
+    ]
+  }
+}

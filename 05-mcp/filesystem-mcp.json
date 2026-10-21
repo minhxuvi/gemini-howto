@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "filesystem-scoped": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/yourname/Projects/shared-contracts",
+        "/Users/yourname/Projects/design-tokens"
+      ]
+    },
+    "git-repo": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-git",
+        "--repository",
+        "/Users/yourname/Projects/my-app"
+      ]
+    }
+  }
+}
